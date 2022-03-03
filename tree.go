@@ -19,17 +19,15 @@ func newTree[T any](heap *SoftHeap[T], prev, next *softHeapTree[T]) softHeapTree
 	return softHeapTree[T]{prev: prev, next: next, heap: heap}
 }
 
-// `meld` joins two consecutive elements in the linked list
-// of `softHeapTree`. The two consecutive elements must have
+// `meld` joins a tree with the tree in front of it in the
+// linked list of trees. The two consecutive elements must have
 // the same rank (i.e. their root elements must have the same rank)
-func (t *softHeapTree[T]) meld(u *softHeapTree[T]) {
+func (t *softHeapTree[T]) meld() {
 	// join the corresponding trees
-	t.root = t.root.combine(u.root)
+	t.root = t.root.combine(t.next.root)
 	// join the two consecutive linked-list nodes
-	t.next = u.next
-	// just in case u is preserved by the calling function
-	u.prev = t.prev
-	u.root = t.root
+	t.next = t.next.next
+	t.next.prev = t
 }
 
 // `updateSuffixMin` updates the value of `t.suffmin`.
