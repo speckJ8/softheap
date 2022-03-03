@@ -68,6 +68,7 @@ func (n *softHeapNode[T]) sift() {
 		// that of the paper.
 		// TODO: change the list of elements to a linked list in the future...
 		n.elements = append(n.elements, n.left.elements...)
+		n.left.elements = nil
 		n.currentKey = n.left.currentKey
 		if !n.left.isLeaf() {
 			n.left.sift()
