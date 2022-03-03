@@ -4,7 +4,7 @@ import (
 	"math"
 )
 
-const sizeConstant float64 = 1.5
+const sizeFactor float64 = 1.5
 
 type softHeapNode[T any] struct {
 	currentKey int
@@ -13,7 +13,9 @@ type softHeapNode[T any] struct {
 	parent     *softHeapNode[T]
 	left       *softHeapNode[T]
 	right      *softHeapNode[T]
-	rank       int
+	// the rank satisfies: `parent.rank == rank + 1` and
+	// `left.rank == right.rank == rank - 1`
+	rank int
 	// determines the maximum length of `elements`
 	size int
 }
@@ -25,13 +27,13 @@ type softHeapElement[T any] struct {
 
 func newNode[T any](heap *SoftHeap[T], parent, left, right *softHeapNode[T]) softHeapNode[T] {
 	rank := 0
-	size := 0
+	size := 1
 	if left != nil {
 		rank = left.rank + 1
-		size = int(math.Ceil(sizeConstant * float64(left.size)))
+		size = int(math.Ceil(sizeFactor * float64(left.size)))
 	} else if right != nil {
 		rank = right.rank + 1
-		size = int(math.Ceil(sizeConstant * float64(right.size)))
+		size = int(math.Ceil(sizeFactor * float64(right.size)))
 	}
 	return softHeapNode[T]{
 		heap:   heap,
