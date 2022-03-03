@@ -15,8 +15,9 @@ type softHeapTree[T any] struct {
 	suffmin *softHeapTree[T]
 }
 
-func newTree[T any](heap *SoftHeap[T], prev, next *softHeapTree[T]) softHeapTree[T] {
-	return softHeapTree[T]{prev: prev, next: next, heap: heap}
+func newTree[T any](heap *SoftHeap[T], prev, next *softHeapTree[T],
+	root *softHeapNode[T]) softHeapTree[T] {
+	return softHeapTree[T]{prev: prev, next: next, heap: heap, root: root}
 }
 
 // `meld` joins a tree with the tree in front of it in the
