@@ -40,13 +40,13 @@ func (t *softHeapTree[T]) combine() {
 // updating each node. On processing `t`, the procedure assumes that
 // the values of suffmin have been updated for all nodes in front of `t`.
 // After updating `t`, the function is recursively called on `t.prev`
-func (t *softHeapTree[T]) updateSuffMin() {
+func (t *softHeapTree[T]) updateSuffixMin() {
 	if t.next == nil || t.root.currentKey <= t.next.root.currentKey {
 		t.suffmin = t
 	} else {
 		t.suffmin = t.next.suffmin
 	}
 	if t.prev != nil {
-		t.prev.updateSuffMin()
+		t.prev.updateSuffixMin()
 	}
 }
