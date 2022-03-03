@@ -45,8 +45,27 @@ func newNode[T any](heap *SoftHeap[T], parent, left, right *softHeapNode[T]) sof
 	}
 }
 
+func (n *softHeapNode[T]) pushElement(key int, value T) {
+	element := softHeapElement[T]{key, value}
+	n.elements = append(n.elements, element)
+}
+
+func (n *softHeapNode[T]) popElement() (int, *T) {
+	E := len(n.elements)
+	if E == 0 {
+		return -1, nil
+	}
+	e := n.elements[E-1]
+	n.elements = n.elements[:E-1]
+	return e.key, &e.value
+}
+
 func (n *softHeapNode[T]) isLeaf() bool {
 	return n.left == nil && n.right == nil
+}
+
+func (n *softHeapNode[T]) isEmpty() bool {
+	return len(n.elements) == 0
 }
 
 // `sift` recursively moves elements from the `elements` list of child nodes
@@ -76,6 +95,18 @@ func (n *softHeapNode[T]) sift() {
 			n.left = nil
 		}
 	}
+}
+
+// `siftIfNeeded` calls `sift` in case the length of the root
+// list of elements is small. This allows us to move elements
+// from the interior nodes to the root node, making it easy to retrieve.
+// Returns true in case `sift` was actually needed.
+func (n *softHeapNode[T]) siftIfNeeded() bool {
+	if len(n.elements) < n.size/2 {
+		n.sift()
+		return true
+	}
+	return false
 }
 
 // `combine` joins two trees by making them have a common parent.
