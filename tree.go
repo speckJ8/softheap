@@ -5,9 +5,9 @@ type softHeapTree[T any] struct {
 	next *softHeapTree[T]
 	heap *SoftHeap[T]
 	root *softHeapNode[T]
-	// `suffmin` points to the tree in the linked-list front
-	// of this tree whose root has the smallest value of
-	// `currentKey` for example if this tree is T1 and we have
+	// `suffmin` points to the tree in front of this tree in
+	// the linked-list whose root has the smallest value
+	// of `currentKey`. For example if this tree is T1 and we have
 	// T1 -> T2 -> T3 -> T4 -> T5
 	// and the value of `T3.root.currentKey` is smaller
 	// than `Ti.root.currentKey` for each 2 < i < 5,
