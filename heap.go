@@ -16,7 +16,7 @@ type SoftHeap[T any] struct {
 func New[T any](intialKey int, initialValue T) SoftHeap[T] {
 	heap := SoftHeap[T]{e: DefaultErrorParameter}
 	node := newNode(&heap, nil, nil, nil)
-	node.addElement(intialKey, initialValue)
+	node.pushElement(intialKey, initialValue)
 	treeListHead := newTree(&heap, nil, nil, &node)
 	heap.treeListHead = &treeListHead
 	heap.rank = treeListHead.rank()
@@ -30,9 +30,6 @@ func NewWithErrorParam[T any](e float64) SoftHeap[T] {
 func (h *SoftHeap[T]) Insert(key int, value T) {
 	e := New(key, value)
 	h.Meld(&e)
-}
-
-func (h *SoftHeap[T]) Delete(key int) {
 }
 
 // `Meld` joins two soft heaps. The new larger heap is stored
@@ -87,10 +84,9 @@ func (h *SoftHeap[T]) Meld(i *SoftHeap[T]) {
 	// three consecutive trees with the same rank, in which case
 	// only the last two are combined.
 	for t.next != nil {
-		if t.rank() == t.next.rank() {
-			if t.next.next == nil || t.rank() != t.next.next.rank() {
-				t.combine()
-			}
+		if t.rank() == t.next.rank() &&
+			(t.next.next == nil || t.rank() != t.next.next.rank()) {
+			t.combine()
 		}
 		t = t.next
 	}
@@ -98,11 +94,24 @@ func (h *SoftHeap[T]) Meld(i *SoftHeap[T]) {
 	h.treeListHead = newListHead
 	h.treeListTail = newListTail
 	h.rank = b.rank
-	h.treeListTail.updateSuffMin()
+	h.treeListTail.updateSuffixMin()
 }
 
 // `ExtractMin` returns the element with the smallest
 // current key, and deletes it from the heap.
-// func (h *SoftHeap[T]) ExtractMin() T {
-// return nil
-// }
+func (h *SoftHeap[T]) ExtractMin() *T {
+	if h.treeListHead == nil {
+		return nil
+	}
+	s := h.treeListHead.suffmin
+	_, e := s.popElementFromRoot()
+	if s.isEmpty() {
+		// remove s from the linked list
+		s.prev.next = s.next
+		s.next.prev = s.prev
+	}
+	return e
+}
+
+func (h *SoftHeap[T]) Delete(key int) {
+}
