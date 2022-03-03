@@ -4,7 +4,7 @@ import (
 	"math"
 )
 
-const sizeConstant float64 = 3.0 / 2.0
+const sizeConstant float64 = 1.5
 
 type softHeapNode[T any] struct {
 	currentKey int
