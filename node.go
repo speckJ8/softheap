@@ -51,29 +51,27 @@ func (n *softHeapNode[T]) isLeaf() bool {
 // the `elements` list of parent nodes. This allows us to remove "unneeded" leaf
 // nodes to make the tree more compact
 func (n *softHeapNode[T]) sift() {
-	if n.isLeaf() {
-		// can't perform Sift on a leaf
-		return
-	}
-	if n.left == nil {
-		n.left = n.right
-	} else if n.left.currentKey > n.right.currentKey {
-		tmp := n.left
-		n.left = n.right
-		n.right = tmp
-	}
-	// NOTE The reference "A simpler implementation and analysis of Chazelle’s Soft Heaps"
-	// (Kaplan, Zwick) assumes that this is done in constant time by joining two
-	// linked lists, but currently we are using arrays for the list of elements. Therefore,
-	// the complexity measure of this implementation does not properly match that of the
-	// paper.
-	// TODO: change the list of elements to a linked list in the future...
-	n.elements = append(n.elements, n.left.elements...)
-	n.currentKey = n.left.currentKey
-	if !n.left.isLeaf() {
-		n.left.sift()
-	} else {
-		n.left = nil
+	for len(n.elements) < n.size && !n.isLeaf() {
+		if n.left == nil {
+			n.left = n.right
+		} else if n.left.currentKey > n.right.currentKey {
+			tmp := n.left
+			n.left = n.right
+			n.right = tmp
+		}
+		// NOTE The reference "A simpler implementation and analysis of Chazelle’s Soft
+		// Heaps" (Kaplan, Zwick) assumes that this is done in constant time by joining two
+		// linked lists, but currently we are using arrays for the list of elements.
+		// Therefore, the complexity measure of this implementation does not properly match
+		// that of the paper.
+		// TODO: change the list of elements to a linked list in the future...
+		n.elements = append(n.elements, n.left.elements...)
+		n.currentKey = n.left.currentKey
+		if !n.left.isLeaf() {
+			n.left.sift()
+		} else {
+			n.left = nil
+		}
 	}
 }
 
