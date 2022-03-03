@@ -17,7 +17,9 @@ type softHeapTree[T any] struct {
 
 func newTree[T any](heap *SoftHeap[T], prev, next *softHeapTree[T],
 	root *softHeapNode[T]) softHeapTree[T] {
-	return softHeapTree[T]{prev: prev, next: next, heap: heap, root: root}
+	t := softHeapTree[T]{prev: prev, next: next, heap: heap, root: root}
+	t.suffmin = &t
+	return t
 }
 
 func (t *softHeapTree[T]) rank() int {
