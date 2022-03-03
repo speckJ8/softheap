@@ -47,6 +47,9 @@ func (n *softHeapNode[T]) isLeaf() bool {
 	return n.left == nil && n.right == nil
 }
 
+// `sift` recursively moves elements from the `elements` list of child nodes
+// the `elements` list of parent nodes. This allows us to remove "unneeded" leaf
+// nodes to make the tree more compact
 func (n *softHeapNode[T]) sift() {
 	if n.isLeaf() {
 		// can't perform Sift on a leaf
