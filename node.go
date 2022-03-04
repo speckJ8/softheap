@@ -18,7 +18,8 @@ type softHeapNode[T any] struct {
 	right      *softHeapNode[T]
 	// the rank satisfies: `left.rank == right.rank == rank - 1`
 	rank int
-	// determines the maximum length of `elements`
+	// determines the approximate maximum length of `elements`:
+	//      size/2 <= len(elements) <= 3*size
 	size int
 }
 
