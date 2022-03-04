@@ -83,7 +83,7 @@ func (h *SoftHeap[T]) Meld(i *SoftHeap[T]) {
 	// Combine consecutive trees with the same rank, unless we have
 	// three consecutive trees with the same rank, in which case
 	// only the last two are combined.
-	for t.next != nil {
+	for t != nil && t.next != nil {
 		if t.rank() == t.next.rank() &&
 			(t.next.next == nil || t.rank() != t.next.next.rank()) {
 			t.combine()
