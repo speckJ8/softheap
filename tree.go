@@ -55,8 +55,12 @@ func (t *softHeapTree[T]) updateSuffixMin() {
 	}
 }
 
-func (t *softHeapTree[T]) popElementFromRoot() (int, *T) {
+// `extractMin` obtains an element in the tree with the
+// smallest key. This element will be in the list of
+// elements of the root node.
+func (t *softHeapTree[T]) extractMin() (int, *T) {
 	k, v := t.root.popElement()
+	// move new elements to the root node if needed
 	if t.root.siftIfNeeded() {
 		// the current key of the root might have changed because
 		// of the sift so we may need need to update the `suffmin` value

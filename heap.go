@@ -106,7 +106,7 @@ func (h *SoftHeap[T]) ExtractMin() *T {
 		return nil
 	}
 	s := h.treeListHead.suffmin
-	_, e := s.popElementFromRoot()
+	_, e := s.extractMin()
 	if s.isEmpty() {
 		// remove s from the linked list
 		s.prev.next = s.next
