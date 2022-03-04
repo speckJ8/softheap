@@ -8,7 +8,7 @@ type softHeapTree[T any] struct {
 	// `suffmin` points to the tree in front of this tree in
 	// the linked-list whose root has the smallest value
 	// of `currentKey`. For example if this tree is T1 and we have
-	// T1 -> T2 -> T3 -> T4 -> T5
+	//      T1 -> T2 -> T3 -> T4 -> T5
 	// and the value of `T3.root.currentKey` is smaller
 	// than `Ti.root.currentKey` for each 2 < i < 5,
 	// then `T1.suffmin = T3`.
