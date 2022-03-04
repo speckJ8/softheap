@@ -11,22 +11,21 @@ type SoftHeap[T any] struct {
 	// of binary trees.
 	// the list is sorted by the rank of each tree
 	treeListHead *softHeapTree[T]
-	treeListTail *softHeapTree[T]
 	rank         int
 }
 
-func New[T any](intialKey int, initialValue T) SoftHeap[T] {
-	heap := SoftHeap[T]{e: DefaultErrorParameter}
+func New[T any](initialKey int, initialValue T) SoftHeap[T] {
+	return NewWithErrorParam(DefaultErrorParameter, initialKey, initialValue)
+}
+
+func NewWithErrorParam[T any](e float64, initialKey int, initialValue T) SoftHeap[T] {
+	heap := SoftHeap[T]{e: e}
 	node := newNode(&heap, nil, nil)
-	node.pushElement(intialKey, initialValue)
+	node.pushElement(initialKey, initialValue)
 	treeListHead := newTree(&heap, nil, nil, &node)
 	heap.treeListHead = &treeListHead
 	heap.rank = treeListHead.rank()
 	return heap
-}
-
-func NewWithErrorParam[T any](e float64) SoftHeap[T] {
-	return SoftHeap[T]{e: e}
 }
 
 func (h *SoftHeap[T]) Insert(key int, value T) {
@@ -94,9 +93,8 @@ func (h *SoftHeap[T]) Meld(i *SoftHeap[T]) {
 	}
 
 	h.treeListHead = newListHead
-	h.treeListTail = newListTail
 	h.rank = b.rank
-	h.treeListTail.updateSuffixMin()
+	newListTail.updateSuffixMin()
 }
 
 // `ExtractMin` returns the element with the smallest
