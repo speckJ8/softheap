@@ -34,7 +34,9 @@ func (t *softHeapTree[T]) combine() {
 	t.root = t.root.combine(t.next.root)
 	// join the two consecutive linked-list nodes
 	t.next = t.next.next
-	t.next.prev = t
+	if t.next != nil {
+		t.next.prev = t
+	}
 }
 
 // `updateSuffixMin` updates the value of `t.suffmin`.
