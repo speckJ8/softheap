@@ -6,10 +6,6 @@ import (
 	"strings"
 )
 
-const sizeFactor float64 = 1.5
-
-var r = int(math.Ceil(math.Log2(1/ErrorParameter))) + 5
-
 type softHeapNode[T any] struct {
 	currentKey int
 	elements   []softHeapElement[T]
@@ -34,12 +30,12 @@ func newNode[T any](heap *SoftHeap[T], left, right *softHeapNode[T]) softHeapNod
 	if left != nil {
 		rank = left.rank + 1
 		if rank > r {
-			size = int(math.Ceil(sizeFactor * float64(left.size)))
+			size = int(math.Ceil(SizeFactor * float64(left.size)))
 		}
 	} else if right != nil {
 		rank = right.rank + 1
 		if rank > r {
-			size = int(math.Ceil(sizeFactor * float64(right.size)))
+			size = int(math.Ceil(SizeFactor * float64(right.size)))
 		}
 	}
 

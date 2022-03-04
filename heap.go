@@ -1,8 +1,14 @@
 package softheap
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
-const ErrorParameter = 1e-10
+const ErrorParameter float64 = 1e-3
+const SizeFactor float64 = 1.5
+
+var r = int(math.Ceil(math.Log2(1/ErrorParameter))) + 2
 
 type SoftHeap[T any] struct {
 	// the heap keeps a doubly linked list
