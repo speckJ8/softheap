@@ -110,6 +110,7 @@ func (h *SoftHeap[T]) ExtractMin() *T {
 	s := h.treeListHead.suffmin
 	_, e := s.extractMin()
 	if s.isEmpty() {
+		prev := s.prev
 		// remove s from the linked list
 		if s.prev != nil {
 			s.prev.next = s.next
@@ -118,6 +119,12 @@ func (h *SoftHeap[T]) ExtractMin() *T {
 		}
 		if s.next != nil {
 			s.next.prev = s.prev
+		}
+		if prev != nil {
+			// `s` was removed and it was the `suffmin` value
+			// of the elements preceding it. Therefore we
+			// need to update the `suffmin` of those elements.
+			prev.updateSuffixMin()
 		}
 	}
 	return e
