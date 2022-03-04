@@ -1,7 +1,9 @@
 package softheap
 
 import (
+	"fmt"
 	"math"
+	"strings"
 )
 
 const sizeFactor float64 = 1.5
@@ -10,11 +12,9 @@ type softHeapNode[T any] struct {
 	currentKey int
 	elements   []softHeapElement[T]
 	heap       *SoftHeap[T]
-	parent     *softHeapNode[T]
 	left       *softHeapNode[T]
 	right      *softHeapNode[T]
-	// the rank satisfies: `parent.rank == rank + 1` and
-	// `left.rank == right.rank == rank - 1`
+	// the rank satisfies: `left.rank == right.rank == rank - 1`
 	rank int
 	// determines the maximum length of `elements`
 	size int
@@ -25,7 +25,7 @@ type softHeapElement[T any] struct {
 	value T
 }
 
-func newNode[T any](heap *SoftHeap[T], parent, left, right *softHeapNode[T]) softHeapNode[T] {
+func newNode[T any](heap *SoftHeap[T], left, right *softHeapNode[T]) softHeapNode[T] {
 	rank := 0
 	size := 1
 	if left != nil {
@@ -36,18 +36,20 @@ func newNode[T any](heap *SoftHeap[T], parent, left, right *softHeapNode[T]) sof
 		size = int(math.Ceil(sizeFactor * float64(right.size)))
 	}
 	return softHeapNode[T]{
-		heap:   heap,
-		rank:   rank,
-		parent: parent,
-		left:   left,
-		right:  right,
-		size:   size,
+		heap:  heap,
+		rank:  rank,
+		left:  left,
+		right: right,
+		size:  size,
 	}
 }
 
 func (n *softHeapNode[T]) pushElement(key int, value T) {
 	element := softHeapElement[T]{key, value}
 	n.elements = append(n.elements, element)
+	if key > n.currentKey {
+		n.currentKey = key
+	}
 }
 
 func (n *softHeapNode[T]) popElement() (int, *T) {
@@ -75,6 +77,7 @@ func (n *softHeapNode[T]) sift() {
 	for len(n.elements) < n.size && !n.isLeaf() {
 		if n.left == nil {
 			n.left = n.right
+			n.right = nil
 		} else if n.left.currentKey > n.right.currentKey {
 			tmp := n.left
 			n.left = n.right
@@ -112,9 +115,18 @@ func (n *softHeapNode[T]) siftIfNeeded() bool {
 // `combine` joins two trees by making them have a common parent.
 // The tree returned will have `n` as its left child and `m` as its right child.
 func (n *softHeapNode[T]) combine(m *softHeapNode[T]) *softHeapNode[T] {
-	root := newNode(n.heap, nil, n, m)
-	root.left.parent = &root
-	root.right.parent = &root
+	root := newNode(n.heap, n, m)
 	root.sift()
 	return &root
+}
+
+func (n *softHeapNode[T]) print(indent int) {
+	fmt.Printf("%s[rank:%d; key: %d; size: %d; elts: %v]\n",
+		strings.Repeat(" ", indent), n.rank, n.currentKey, n.size, n.elements)
+	if n.left != nil {
+		n.left.print(indent + 2)
+	}
+	if n.right != nil {
+		n.right.print(indent + 2)
+	}
 }

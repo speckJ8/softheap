@@ -54,3 +54,21 @@ func (t *softHeapTree[T]) updateSuffixMin() {
 		t.prev.updateSuffixMin()
 	}
 }
+
+func (t *softHeapTree[T]) popElementFromRoot() (int, *T) {
+	k, v := t.root.popElement()
+	if t.root.siftIfNeeded() {
+		// the current key of the root might have changed because
+		// of the sift so we may need need to update the `suffmin` value
+		t.updateSuffixMin()
+	}
+	return k, v
+}
+
+func (t *softHeapTree[T]) isEmpty() bool {
+	return t.root.isEmpty()
+}
+
+func (t *softHeapTree[T]) print() {
+	t.root.print(2)
+}

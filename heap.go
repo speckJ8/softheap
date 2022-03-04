@@ -1,5 +1,7 @@
 package softheap
 
+import "fmt"
+
 const DefaultErrorParameter = 1e-10
 
 type SoftHeap[T any] struct {
@@ -15,7 +17,7 @@ type SoftHeap[T any] struct {
 
 func New[T any](intialKey int, initialValue T) SoftHeap[T] {
 	heap := SoftHeap[T]{e: DefaultErrorParameter}
-	node := newNode(&heap, nil, nil, nil)
+	node := newNode(&heap, nil, nil)
 	node.pushElement(intialKey, initialValue)
 	treeListHead := newTree(&heap, nil, nil, &node)
 	heap.treeListHead = &treeListHead
@@ -114,4 +116,15 @@ func (h *SoftHeap[T]) ExtractMin() *T {
 }
 
 func (h *SoftHeap[T]) Delete(key int) {
+}
+
+func (h *SoftHeap[T]) Print() {
+	t := h.treeListHead
+	fmt.Println("--------[ Heap ]--------")
+	for t != nil {
+		fmt.Printf("Tree: rank=%d suffmin.rank=%d\n",
+			t.rank(), t.suffmin.rank())
+		t.print()
+		t = t.next
+	}
 }
