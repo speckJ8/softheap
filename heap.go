@@ -103,12 +103,12 @@ func (h *SoftHeap[T]) Meld(i *SoftHeap[T]) {
 
 // `ExtractMin` returns the element with the smallest
 // current key, and deletes it from the heap.
-func (h *SoftHeap[T]) ExtractMin() *T {
+func (h *SoftHeap[T]) ExtractMin() (int, *T) {
 	if h.treeListHead == nil {
-		return nil
+		return -1, nil
 	}
 	s := h.treeListHead.suffmin
-	_, e := s.extractMin()
+	k, v := s.extractMin()
 	if s.isEmpty() {
 		prev := s.prev
 		// remove s from the linked list
@@ -127,7 +127,7 @@ func (h *SoftHeap[T]) ExtractMin() *T {
 			prev.updateSuffixMin()
 		}
 	}
-	return e
+	return k, v
 }
 
 func (h *SoftHeap[T]) Delete(key int) {
