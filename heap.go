@@ -2,11 +2,9 @@ package softheap
 
 import "fmt"
 
-const DefaultErrorParameter = 1e-10
+const ErrorParameter = 1e-10
 
 type SoftHeap[T any] struct {
-	// error paremeter
-	e float64
 	// the heap keeps a doubly linked list
 	// of binary trees.
 	// the list is sorted by the rank of each tree
@@ -15,11 +13,11 @@ type SoftHeap[T any] struct {
 }
 
 func New[T any](initialKey int, initialValue T) SoftHeap[T] {
-	return NewWithErrorParam(DefaultErrorParameter, initialKey, initialValue)
+	return NewWithErrorParam(initialKey, initialValue)
 }
 
-func NewWithErrorParam[T any](e float64, initialKey int, initialValue T) SoftHeap[T] {
-	heap := SoftHeap[T]{e: e}
+func NewWithErrorParam[T any](initialKey int, initialValue T) SoftHeap[T] {
+	heap := SoftHeap[T]{}
 	node := newNode(&heap, nil, nil)
 	node.pushElement(initialKey, initialValue)
 	treeListHead := newTree(&heap, nil, nil, &node)

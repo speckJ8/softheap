@@ -8,6 +8,8 @@ import (
 
 const sizeFactor float64 = 1.5
 
+var r = int(math.Ceil(math.Log2(1/ErrorParameter))) + 5
+
 type softHeapNode[T any] struct {
 	currentKey int
 	elements   []softHeapElement[T]
