@@ -33,11 +33,16 @@ func newNode[T any](heap *SoftHeap[T], left, right *softHeapNode[T]) softHeapNod
 	size := 1
 	if left != nil {
 		rank = left.rank + 1
-		size = int(math.Ceil(sizeFactor * float64(left.size)))
+		if rank > r {
+			size = int(math.Ceil(sizeFactor * float64(left.size)))
+		}
 	} else if right != nil {
 		rank = right.rank + 1
-		size = int(math.Ceil(sizeFactor * float64(right.size)))
+		if rank > r {
+			size = int(math.Ceil(sizeFactor * float64(right.size)))
+		}
 	}
+
 	return softHeapNode[T]{
 		heap:  heap,
 		rank:  rank,
