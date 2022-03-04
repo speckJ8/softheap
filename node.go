@@ -109,7 +109,7 @@ func (n *softHeapNode[T]) sift() {
 // from the interior nodes to the root node, making it easy to retrieve.
 // Returns true in case `sift` was actually needed.
 func (n *softHeapNode[T]) siftIfNeeded() bool {
-	if len(n.elements) < n.size/2 {
+	if len(n.elements) <= n.size/2 {
 		n.sift()
 		return true
 	}
