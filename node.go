@@ -86,7 +86,7 @@ func (n *softHeapNode[T]) sift() {
 		if n.left == nil {
 			n.left = n.right
 			n.right = nil
-		} else if n.left.currentKey > n.right.currentKey {
+		} else if n.right != nil && n.left.currentKey > n.right.currentKey {
 			tmp := n.left
 			n.left = n.right
 			n.right = tmp
