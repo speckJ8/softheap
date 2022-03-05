@@ -24,9 +24,9 @@ func New[T any](initialKey int, initialValue T) SoftHeap[T] {
 
 func NewWithErrorParam[T any](initialKey int, initialValue T) SoftHeap[T] {
 	heap := SoftHeap[T]{}
-	node := newNode(&heap, nil, nil)
+	node := newNode[T](nil, nil)
 	node.pushElement(initialKey, initialValue)
-	treeListHead := newTree(&heap, nil, nil, &node)
+	treeListHead := newTree(nil, nil, &node)
 	heap.treeListHead = &treeListHead
 	heap.rank = treeListHead.rank()
 	return heap
@@ -68,7 +68,6 @@ func (h *SoftHeap[T]) Meld(i *SoftHeap[T]) {
 			m = bt
 			bt = bt.next
 		}
-		m.heap = h
 		return m
 	}
 

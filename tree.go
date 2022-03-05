@@ -3,7 +3,6 @@ package softheap
 type softHeapTree[T any] struct {
 	prev *softHeapTree[T]
 	next *softHeapTree[T]
-	heap *SoftHeap[T]
 	root *softHeapNode[T]
 	// `suffmin` points to the tree in front of this tree in
 	// the linked-list whose root has the smallest value
@@ -15,9 +14,8 @@ type softHeapTree[T any] struct {
 	suffmin *softHeapTree[T]
 }
 
-func newTree[T any](heap *SoftHeap[T], prev, next *softHeapTree[T],
-	root *softHeapNode[T]) softHeapTree[T] {
-	t := softHeapTree[T]{prev: prev, next: next, heap: heap, root: root}
+func newTree[T any](prev, next *softHeapTree[T], root *softHeapNode[T]) softHeapTree[T] {
+	t := softHeapTree[T]{prev: prev, next: next, root: root}
 	t.suffmin = &t
 	return t
 }

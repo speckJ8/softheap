@@ -9,7 +9,6 @@ import (
 type softHeapNode[T any] struct {
 	currentKey int
 	elements   []softHeapElement[T]
-	heap       *SoftHeap[T]
 	left       *softHeapNode[T]
 	right      *softHeapNode[T]
 	// the rank satisfies: `left.rank == right.rank == rank - 1`
@@ -24,7 +23,7 @@ type softHeapElement[T any] struct {
 	value T
 }
 
-func newNode[T any](heap *SoftHeap[T], left, right *softHeapNode[T]) softHeapNode[T] {
+func newNode[T any](left, right *softHeapNode[T]) softHeapNode[T] {
 	rank := 0
 	size := 1
 	if left != nil {
@@ -40,7 +39,6 @@ func newNode[T any](heap *SoftHeap[T], left, right *softHeapNode[T]) softHeapNod
 	}
 
 	return softHeapNode[T]{
-		heap:  heap,
 		rank:  rank,
 		left:  left,
 		right: right,
@@ -120,7 +118,7 @@ func (n *softHeapNode[T]) siftIfNeeded() bool {
 // `combine` joins two trees by making them have a common parent.
 // The tree returned will have `n` as its left child and `m` as its right child.
 func (n *softHeapNode[T]) combine(m *softHeapNode[T]) *softHeapNode[T] {
-	root := newNode(n.heap, n, m)
+	root := newNode(n, m)
 	root.sift()
 	return &root
 }
