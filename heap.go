@@ -149,5 +149,5 @@ func (h *SoftHeap[T]) Print() {
 		t.print()
 		t = t.next
 	}
-	fmt.Println("----------[           Heap           ]----------")
+	fmt.Println("----------[             Heap             ]----------")
 }
