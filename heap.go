@@ -134,11 +134,13 @@ func (h *SoftHeap[T]) Delete(key int) {
 
 func (h *SoftHeap[T]) Print() {
 	t := h.treeListHead
-	fmt.Println("--------[ Heap ]--------")
+	fmt.Printf("----------[ Heap: e=%.4f, s=%.2f, r=%d ]----------\n",
+		ErrorParameter, SizeFactor, r)
 	for t != nil {
 		fmt.Printf("Tree: rank=%d suffmin.rank=%d\n",
 			t.rank(), t.suffmin.rank())
 		t.print()
 		t = t.next
 	}
+	fmt.Println("----------[           Heap           ]----------")
 }
