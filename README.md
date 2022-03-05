@@ -1,4 +1,4 @@
-# soft-heap
+# softheap
 Soft Heap Implementation in Go
 
 Description
