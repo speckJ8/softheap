@@ -93,7 +93,8 @@ func (n *softHeapNode[T]) sift() {
 		// Therefore, the complexity measure of this implementation does not properly match
 		// that of the paper.
 		// TODO: change the list of elements to a linked list in the future...
-		n.elements = append(n.elements, n.left.elements...)
+		elements := append(n.left.elements, n.elements...)
+		n.elements = elements
 		n.left.elements = nil
 		n.currentKey = n.left.currentKey
 		if !n.left.isLeaf() {
