@@ -8,7 +8,7 @@ two soft heaps) and delete operations to be performed in constant amortized time
 insert operation operates in
 ![insertcomplexity](https://render.githubusercontent.com/render/math?math=O(\log{1/\varepsilon}))
 time, with the caveat that at most 
-![errorrate](https://render.githubusercontent.com/render/math?math=\varepsilon n))
+![errorrate](https://render.githubusercontent.com/render/math?math=\varepsilon n)
 elements in the queue have their key (the priority) value corrupted (i.e., their value changed
 from the original).
 
