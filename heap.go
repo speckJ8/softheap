@@ -136,9 +136,6 @@ func (h *SoftHeap[T]) ExtractMin() (int, *T) {
 	return k, v
 }
 
-func (h *SoftHeap[T]) Delete(key int) {
-}
-
 func (h *SoftHeap[T]) Print() {
 	t := h.treeListHead
 	fmt.Printf("----------[ Heap: e=%.4f, s=%.2f, r=%d ]----------\n",
