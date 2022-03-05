@@ -16,14 +16,15 @@ type SoftHeap[T any] struct {
 	// the list is sorted by the rank of each tree
 	treeListHead *softHeapTree[T]
 	rank         int
+	empty        bool
 }
 
-func New[T any](initialKey int, initialValue T) SoftHeap[T] {
-	return NewWithErrorParam(initialKey, initialValue)
+func New[T any]() SoftHeap[T] {
+	return SoftHeap[T]{empty: true}
 }
 
-func NewWithErrorParam[T any](initialKey int, initialValue T) SoftHeap[T] {
-	heap := SoftHeap[T]{}
+func NewWithInitialValue[T any](initialKey int, initialValue T) SoftHeap[T] {
+	heap := SoftHeap[T]{empty: false}
 	node := newNode[T](nil, nil)
 	node.pushElement(initialKey, initialValue)
 	treeListHead := newTree(nil, nil, &node)
@@ -33,8 +34,14 @@ func NewWithErrorParam[T any](initialKey int, initialValue T) SoftHeap[T] {
 }
 
 func (h *SoftHeap[T]) Insert(key int, value T) {
-	e := New(key, value)
-	h.Meld(&e)
+	e := NewWithInitialValue(key, value)
+	if h.empty {
+		h.treeListHead = e.treeListHead
+		h.rank = e.rank
+		h.empty = false
+	} else {
+		h.Meld(&e)
+	}
 }
 
 // `Meld` joins two soft heaps. The new larger heap is stored
